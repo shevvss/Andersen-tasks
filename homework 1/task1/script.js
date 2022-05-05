@@ -1,13 +1,14 @@
-'use script'
-let x = +prompt('Enter x', '');
-let n = +prompt('Enter n', '');
+'use script';
+
+const num1 = +prompt('Enter number', '');
+const num2 = +prompt('Enter number', '');
 
 function numInSystem(x, n) {
-    try {
-        console.log(x.toString(n));
-        } catch {
-    console.log('Incorrect input!')
-        }
+  try {
+    console.log(x.toString(n));
+  } catch {
+    console.log('Incorrect input!');
+  }
 }
 
-numInSystem(x, n)
+numInSystem(num1, num2);
