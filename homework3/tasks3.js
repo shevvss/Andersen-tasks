@@ -1,8 +1,8 @@
-Array.prototype.myFilter = function (callback) {
+Array.prototype.myFilter = function (callback, thisArg) {
   const filterArr = [];
 
   for (let i = 0; i < this.length; i++) {
-    if (callback(this[i], i, this)) {
+    if (callback.call(thisArg, this[i], i, this)) {
       filterArr.push(this[i]);
     }
   }
