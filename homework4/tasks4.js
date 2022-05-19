@@ -1,48 +1,63 @@
-// Реализовать функцию concatStrings, которая может быть вызвана следующим образом: concatStrings('first')('second')('third')().
-// Результатом вызова данной функции должна являться новая строка, содержащая все переданные таким образом строки.
-// Если одно из значений является невалидной строкой (пустая строка - это валидная строка), то возвращать результат,
-// полученный до текущего момента (ошибок не бросать!)
-// Кроме этого добавить функции второй необязательный параметр - separator. Он также должен являться валидной строкой,
-// однако в случаях, когда вместо валидной строки на его место передано что-то ещё - запускаем функцию как будто без него вообще
-// (иными словами игнорируем, никаких ошибок кидать не нужно). Если же всё-таки параметр был валидной строкой,
-// то результирующая строка должна содержать все переденные строки, разделённые значчением separator.
+const concatStrings = (arg, separator) => {
+  if (typeof separator !== 'string') separator = '';
 
-// > Примеры:
-// Вызываем функцию: concatStrings('first')('second')('third')()
-// Получаем результат: 'firstsecondthird'
-// Вызываем функцию: concatStrings('first', null)('second')()
-// Получаем результат: 'firstsecond'
-// Вызываем функцию: concatStrings('first', '123')('second')('third')()
-// Получаем результат: 'first123second123third'
-// Вызываем функцию: concatStrings('some-value')('')('')(null)
-// Получаем результат: 'some-value'
-// Вызываем функцию: concatStrings('some-value')(2)
-// Получаем результат: 'some-value'
-// Вызываем функцию: concatStrings('some-value')('333')(123n)
-// Получаем результат: 'some-val333'
+  const result = [];
+  const innerConcat = (arg) => {
+    if (typeof arg != 'string') {
+      return result.join(separator);
+    }
+    result.push(arg);
 
-// ==============================================================================================
+    return innerConcat;
+  };
+  return innerConcat(arg);
+};
 
-// Создать класс Calculator. Конструктор класса должен принимать два валидных числа, иначе (если параметра не два или хотя бы один из них невалидный number)
-// бросать ошибку (throw new Error('')). Данный класс должен иметь методы setX, setY, logSum, logMul, logSub, logDiv.
-// - setX(num) - задаёт первому из чисел новое значение. Кидать ошибку если параметр не передан или является невалидным числом;
-// - setY(num) - задаёт второму из чисел новое значение. Кидать ошибку если параметр не передан или является невалидным числом;
-// - logSum() - выводит в консоль сумму двух наших чисел внутри класса;
-// - logMul() - выводит в консоль произведение двух наших чисел внутри класса;
-// - logSub() - выводит в консоль разность двух наших чисел внутри класса;
-// - logDiv() - выводит в консоль частное двух наших чисел внутри класса ИЛИ кидает ошибку, если второе число (Y) равняется нулю.
-// !ВАЖНО! Все методы класса должны отрабатывать корректно ДАЖЕ в случае копирования функций в отдельные переменные.
+class Calculator {
+  constructor(num1, num2) {
+    if (this.isNumValid(num1) || this.isNumValid(num2)) {
+      throw new Error('incorrect input');
+    }
 
-// > Пример:
-// const calculator = new Calculator(12, 3);
-// calculator.logSum(); // 15
-// calculator.logDiv(); // 4
-// calculator.setX(15);
-// calculator.logDiv(); // 5
-// const logCalculatorDiv = calculator.logDiv;
-// logCalculatorDiv(); // 5
-// calculator.setY(444n); // Ошибка!
+    this.num1 = num1;
+    this.num2 = num2;
+    this.logDiv = this.logDiv.bind(this);
+    this.logSum = this.logSum.bind(this);
+    this.logSub = this.logSub.bind(this);
+    this.logMul = this.logMul.bind(this);
+  }
 
-// Функцию и класс называем так, как написано в задании. Проверять буду тестами.
+  isNumValid(num) {
+    return typeof num === 'bigint' || !isFinite(num);
+  }
 
-// P.s. Infinity, -Infinity и NaN - это невалидные числа (делаю такую пометку в первый и последний раз).
+  setX(num) {
+    if (this.isNumValid(num)) {
+      throw new Error('incorrect input');
+    }
+    this.num1 = num;
+  }
+
+  setY(num) {
+    if (this.isNumValid(num)) {
+      throw new Error('incorrect input');
+    }
+    this.num2 = num;
+  }
+
+  logSum() {
+    console.log(this.num1 + this.num2);
+  }
+
+  logMul() {
+    console.log(this.num1 * this.num2);
+  }
+
+  logSub() {
+    console.log(this.num1 - this.num2);
+  }
+
+  logDiv() {
+    console.log(this.num1 / this.num2);
+  }
+}
