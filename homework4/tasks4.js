@@ -6,15 +6,21 @@ const concatStrings = (arg, separator) => {
     if (typeof arg != 'string') {
       return result.join(separator);
     }
+
     result.push(arg);
 
     return innerConcat;
   };
+
   return innerConcat(arg);
 };
 
 class Calculator {
   constructor(num1, num2) {
+    if (arguments.length !== 2) {
+      throw new Error('Wrong numbers of arguments');
+    }
+
     if (this.isNumValid(num1) || this.isNumValid(num2)) {
       throw new Error('incorrect input');
     }
@@ -35,6 +41,7 @@ class Calculator {
     if (this.isNumValid(num)) {
       throw new Error('incorrect input');
     }
+
     this.num1 = num;
   }
 
@@ -42,6 +49,7 @@ class Calculator {
     if (this.isNumValid(num)) {
       throw new Error('incorrect input');
     }
+
     this.num2 = num;
   }
 
