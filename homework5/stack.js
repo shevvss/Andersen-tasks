@@ -1,11 +1,20 @@
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.next = null;
+  }
+}
+
 class Stack {
-  constructor(maxSize = 10) {
+  constructor(maxSize) {
     if (!isFinite(maxSize)) {
       throw new Error('Invalid input');
     }
 
     this.maxSize = maxSize;
-    this.stack = [];
+    this.first = null;
+    this.last = null;
+    this.size = 0;
   }
 
   static fromIterable(iterable) {
@@ -28,12 +37,23 @@ class Stack {
     return newStack;
   }
 
-  push(elem) {
-    if (this.stack.length >= this.maxSize) {
+  push(value) {
+    if (this.size >= this.maxSize) {
       throw new Error('Stack overflow');
     }
 
-    this.stack.push(elem);
+    let node = new Node(value);
+
+    if (!this.first) {
+      this.first = node;
+      this.last = node;
+    } else {
+      let temp = this.first;
+      this.first = node;
+      this.first.next = temp;
+    }
+
+    this.size++;
   }
 
   pop() {
@@ -41,20 +61,37 @@ class Stack {
       throw new Error('Stack is empty');
     }
 
-    return this.stack.pop();
+    let temp = this.first;
+
+    if (this.first === this.last) {
+      this.last = null;
+    }
+
+    this.first = this.first.next;
+
+    this.size--;
+
+    return temp.value;
   }
 
   peek() {
     if (this.isEmpty()) return null;
 
-    return this.stack[this.stack.length - 1];
+    return this.first.value;
   }
 
   isEmpty() {
-    return this.stack.length === 0;
+    return this.size === 0;
   }
 
   toArray() {
-    return this.stack;
+    const array = [];
+
+    for (let i = 0; i < this.size; i++) {
+      array.push(this.first.value);
+      this.first = this.first.next;
+    }
+
+    return array;
   }
 }
